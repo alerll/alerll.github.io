@@ -1,3 +1,4 @@
+http://example.com/2022/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/
 http://example.com/images/index.html
 http://example.com/link/index.html
 http://example.com/tags/index.html
