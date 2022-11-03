@@ -7,3 +7,5 @@ http://example.com/images/index.html
 http://example.com/link/index.html
 http://example.com/categories/index.html
 http://example.com/
+http://example.com/tags/Mysql/
+http://example.com/categories/Mysql/
