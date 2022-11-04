@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-03T11:46:09.199Z</updated>
+  <updated>2022-11-04T11:08:51.466Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mysql一直重新启动问题</title>
+    <link href="http://example.com/2022/11/04/Mysql%E4%B8%80%E7%9B%B4%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/"/>
+    <id>http://example.com/2022/11/04/Mysql%E4%B8%80%E7%9B%B4%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/</id>
+    <published>2022-11-04T11:09:33.245Z</published>
+    <updated>2022-11-04T11:08:51.466Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.cnblogs.com/qianyuliang/p/9916372.html">https://www.cnblogs.com/qianyuliang/p/9916372.html</a>     —解释ib_logfile文件是什么</p><p>环境：Mysql5.5</p><p>报错内容：<br>InnoDB: Some operating system error numbers are described at<br>InnoDB: <a href="http://dev.mysql.com/doc/refman/5.5/en/operating-system-error-codes.html">http://dev.mysql.com/doc/refman/5.5/en/operating-system-error-codes.html</a><br>InnoDB: File name .\ibdata1<br>InnoDB: File operation call: ‘Windows aio’.<br>InnoDB: Cannot continue operation.<br>221104  9:15:52 [Note] Plugin ‘FEDERATED’ is disabled.<br>221104  9:15:52 InnoDB: The InnoDB memory heap is disabled<br>221104  9:15:52 InnoDB: Mutexes and rw_locks use Windows interlocked functions<br>221104  9:15:52 InnoDB: Compressed tables use zlib 1.2.3<br>221104  9:15:52 InnoDB: Initializing buffer pool, size &#x3D; 107.0M<br>221104  9:15:52 InnoDB: Completed initialization of buffer pool<br>221104  9:15:52 InnoDB: highest supported file format is Barracuda.<br>InnoDB: Log scan progressed past the checkpoint lsn 41252690717<br>221104  9:15:52  InnoDB: Database was not shut down normally!<br>InnoDB: Starting crash recovery.<br>InnoDB: Reading tablespace information from the .ibd files…<br>InnoDB: Restoring possible half-written data pages from the doublewrite<br>InnoDB: buffer…<br>InnoDB: Doing recovery: scanned up to log sequence number 41252692110<br>221104  9:15:55  InnoDB: Starting an apply batch of log records to the database…<br>InnoDB: Progress in percents: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99<br>InnoDB: Apply batch completed<br>221104  9:15:56  InnoDB: Waiting for the background threads to start<br>221104  9:15:57 InnoDB: 1.1.8 started; log sequence number 41252692110<br>221104  9:15:57 [Note] Event Scheduler: Loaded 0 events<br>221104  9:15:57 [Note] D:\Program Files (x86)\MySQL\MySQL Server 5.5\bin\mysqld: ready for connections.<br>Version: ‘5.5.15’  socket: ‘’  port: 3300  MySQL Community Server (GPL)<br>221104  9:16:02  InnoDB: Operating system error number 1 in a file operation.</p><p>对配置文件my.ini加入以下配置</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#当innodb_file_per_table选项打开的话，新创建表的数据和索引则不会存在系统表空间中，而是存放在各自表的.ibd文件中</span><br><span class="line">innodb_file_per_table =1 </span><br><span class="line"></span><br><span class="line">注：show variables like &#x27;%per_table%&#x27;; 查看是否设置成功</span><br><span class="line"></span><br><span class="line">#因ibdata1文件无法正常加载 使mysql跳过恢复步骤</span><br><span class="line">innodb_force_recovery =6</span><br><span class="line">注：</span><br><span class="line">innodb_force_recovery可以设置为1-6,大的数字包含前面所有数字的影响。</span><br><span class="line">1. (SRV_FORCE_IGNORE_CORRUPT):忽略检查到的corrupt页。</span><br><span class="line">2. (SRV_FORCE_NO_BACKGROUND):阻止主线程的运行，如主线程需要执行full purge操作，会导致crash。</span><br><span class="line">3. (SRV_FORCE_NO_TRX_UNDO):不执行事务回滚操作。</span><br><span class="line">4. (SRV_FORCE_NO_IBUF_MERGE):不执行插入缓冲的合并操作。</span><br><span class="line">5. (SRV_FORCE_NO_UNDO_LOG_SCAN):不查看重做日志，InnoDB存储引擎会将未提交的事务视为已提交。</span><br><span class="line">6. (SRV_FORCE_NO_LOG_REDO):不执行前滚的操作</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">当innodb_force_recovery和innodb_purge_thread一起设置时会出现报错</span><br><span class="line">innodb_purge_thread =0   ---这个设置为0或者注释</span><br><span class="line"></span><br><span class="line">150125 17:07:42 InnoDB: Waiting for the background threads to start</span><br><span class="line">150125 17:07:43 InnoDB: Waiting for the background threads to start</span><br><span class="line">150125 17:07:44 InnoDB: Waiting for the background threads to start</span><br><span class="line">150125 17:07:45 InnoDB: Waiting for the background threads to start</span><br><span class="line">150125 17:07:46 InnoDB: Waiting for the background threads to start</span><br><span class="line">150125 17:07:47 InnoDB: Waiting for the background threads to start</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line">innodb_purge_thread作用看：https://www.cnblogs.com/DataArt/p/10182571.html</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/qianyuliang/p/9916372.html&quot;&gt;https://www.cnblogs.com/qianyuliang/p/9916372.html&lt;/a&gt;     —解释ib_logfile文件是什</summary>
+      
+    
+    
+    
+    <category term="Mysql问题" scheme="http://example.com/categories/Mysql%E9%97%AE%E9%A2%98/"/>
+    
+    
+    <category term="Mysql问题" scheme="http://example.com/tags/Mysql%E9%97%AE%E9%A2%98/"/>
+    
+  </entry>
   
   <entry>
     <title>Mysql基础查询命令</title>
