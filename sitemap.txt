@@ -9,9 +9,9 @@ http://example.com/images/index.html
 http://example.com/link/index.html
 http://example.com/categories/index.html
 http://example.com/
-http://example.com/tags/Mysql%E9%97%AE%E9%A2%98/
 http://example.com/tags/Windows/
+http://example.com/tags/Mysql%E9%97%AE%E9%A2%98/
 http://example.com/tags/Mysql/
-http://example.com/categories/Mysql%E9%97%AE%E9%A2%98/
 http://example.com/categories/Windows/
+http://example.com/categories/Mysql%E9%97%AE%E9%A2%98/
 http://example.com/categories/Mysql/
