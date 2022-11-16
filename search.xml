@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>Windows下杀进程</title>
+      <link href="/2022/11/04/Windows%E4%B8%8B%E6%9D%80%E8%BF%9B%E7%A8%8B/"/>
+      <url>/2022/11/04/Windows%E4%B8%8B%E6%9D%80%E8%BF%9B%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h3 id="杀进程："><a href="#杀进程：" class="headerlink" title="杀进程："></a>杀进程：</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、根据进程名称杀进程：taskkill /f /t /im qq.exe //此例是杀QQ进程</span><br><span class="line"></span><br><span class="line">2、通过进程号杀进程 ：taskkill /pid 9396 -f  //规则taskkill /pid [进程号] -t(结束该进程) -f(强制结束该进程以及所有子进程) 这种方式是成功的；</span><br><span class="line"></span><br><span class="line">taskkill -f -pid 76556</span><br><span class="line"></span><br><span class="line">windows查看端口占用情况：【port=80；pid=7883】</span><br><span class="line">【查找端口号对应的进程信息】</span><br><span class="line">netstat  -ano|findstr 80</span><br><span class="line">【查找pid对应的信息】</span><br><span class="line">tasklist |findstr 7883</span><br><span class="line">【根据名称查找对应的信息】</span><br><span class="line">tasklist|find /i  &quot;java.exe&quot;</span><br><span class="line">【杀掉pid对应的进程】</span><br><span class="line">taskkill /pid 50568 -f</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Windows </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Windows </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Mysql基础查询命令</title>
       <link href="/2022/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/"/>
       <url>/2022/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/</url>
